@@ -78,7 +78,7 @@ public class CameraOrbiter : MonoBehaviour
         }
         if(!manualControl)
         {
-            azimuth += Mathf.Repeat(Time.deltaTime * orbitSpeed, 360);
+            azimuth = Mathf.Repeat(azimuth + Time.deltaTime * orbitSpeed, 360);
         }
     }
 }

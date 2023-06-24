@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using Color = UnityEngine.Color;
 
 public class StatBar : Stat<float>
 {

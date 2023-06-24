@@ -27,7 +27,7 @@ public class ScreenUI : MonoBehaviour
             canvas = gameObject.GetOrAddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.worldCamera = Camera.main;
-            canvas.pixelPerfect = true;
+            //canvas.pixelPerfect = true;
             canvas.enabled = true;
 
             leftSidebar = new GameObject("Left Sidebar");
@@ -36,7 +36,7 @@ public class ScreenUI : MonoBehaviour
             leftSidebarTransform.anchorMin = new Vector2(0, 0);
             leftSidebarTransform.anchorMax = new Vector2(0, 1);
             leftSidebarTransform.pivot = new Vector2(0, 0.5f);
-            leftSidebarTransform.sizeDelta = new Vector2(100, 0);
+            leftSidebarTransform.sizeDelta = new Vector2(160, 0);
             leftSidebarTransform.anchoredPosition = new Vector2(0, 0);
             leftLayout = leftSidebar.GetOrAddComponent<VerticalLayoutGroup>();
             leftLayout.childAlignment = TextAnchor.UpperLeft;
@@ -55,7 +55,7 @@ public class ScreenUI : MonoBehaviour
             rightSidebarTransform.anchorMin = new Vector2(1, 0);
             rightSidebarTransform.anchorMax = new Vector2(1, 1);
             rightSidebarTransform.pivot = new Vector2(1, 0.5f);
-            rightSidebarTransform.sizeDelta = new Vector2(100, 0);
+            rightSidebarTransform.sizeDelta = new Vector2(160, 0);
             rightSidebarTransform.anchoredPosition = new Vector2(0, 0);
             rightLayout = rightSidebar.GetOrAddComponent<VerticalLayoutGroup>();
             rightLayout.childAlignment = TextAnchor.UpperRight;

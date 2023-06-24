@@ -105,8 +105,9 @@ public class StatBlock : MonoBehaviour
             stat.Update();
         }
     }
-    private void OnPreRender() => UpdatePosition();
-    private void OnDrawGizmos() => UpdatePosition();
+    private void OnGUI() => UpdatePosition();
+    //private void OnWillRenderObject() => UpdatePosition();
+    //private void OnDrawGizmos() => UpdatePosition();
     private void UpdateLayout()
     {
         if(layout != null)
@@ -127,7 +128,7 @@ public class StatBlock : MonoBehaviour
         if(entity != null)
         {
             // Draw the StatBlock on a screen canvas.
-            if(canvas != null)
+            if(canvas != null && canvas != localCanvas)
             {
                 // Get the stats block position above the entity in world space.
                 Vector3 position = entity.transform.position;
