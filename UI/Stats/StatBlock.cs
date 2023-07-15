@@ -147,7 +147,7 @@ public class StatBlock : MonoBehaviour
             else
             {
                 // Rotate the StatBlock to face the camera.
-                Camera camera = Camera.current;
+                Camera camera = Camera.current ?? Camera.main;
                 if(localCanvas != null && camera != null)
                 {
                     localCanvas.transform.rotation = Quaternion.LookRotation(camera.transform.forward);

@@ -36,30 +36,30 @@ public static class Geometry
         int[] indices = new int[] { 0, 2, 1, 0, 3, 2 };
         return new MeshData("Quad", vertices, indices, normals, null, uv1);
     }
-    public static MeshData GetPlane(BasisVectors basisVectors, Vector3 center, int divisions) => GetPlane(basisVectors, center, divisions, divisions);
-    public static MeshData GetPlane(BasisVectors basisVectors, Vector3 center, int xDivisions, int yDivisions)
+    public static MeshData GetPlane(BasisVectors basisVectors, Vector3 center, int quadCount) => GetPlane(basisVectors, center, quadCount, quadCount);
+    public static MeshData GetPlane(BasisVectors basisVectors, Vector3 center, int xQuadCount, int yQuadCount)
     {
-        int xPoints = 1 + xDivisions;
-        int yPoints = 1 + yDivisions;
-        int points = xPoints * yPoints;
-        Vector3[] vertices = new Vector3[points];
-        Vector3[] normals = new Vector3[points];
-        Vector2[] uv1 = new Vector2[points];
-        Vector3 origin = center - 0.5f * (basisVectors.x + basisVectors.y);
+        int xPointCount = 1 + xQuadCount;
+        int yPointCount = 1 + yQuadCount;
+        int pointCount = xPointCount * yPointCount;
+        Vector3[] vertices = new Vector3[pointCount];
+        Vector3[] normals = new Vector3[pointCount];
+        Vector2[] uv1 = new Vector2[pointCount];
 
-        for(int y = 0; y <= yDivisions; ++y)
+        int index = 0;
+        Vector3 y = (1 - yPointCount) * basisVectors.y / 2;
+        for(int yi = 0; yi < yPointCount; ++yi, y += basisVectors.y)
         {
-            float yFrac = (float)y / yDivisions;
-            for(int x = 0; x <= xDivisions; ++x)
+            Vector3 x = (1 - xPointCount) * basisVectors.x / 2;
+            for(int xi = 0; xi < xPointCount; ++xi, x += basisVectors.x)
             {
-                float xFrac = (float)x / xDivisions;
-                int index = y * xPoints + x;
-                vertices[index] = origin + basisVectors.x * xFrac + basisVectors.y * yFrac;
+                vertices[index] = center + x + y;
                 normals[index] = basisVectors.normal;
-                uv1[index] = new Vector2(xFrac, yFrac);
+                uv1[index] = new Vector2((float)xi / xPointCount, (float)yi / yPointCount);
+                ++index;
             }
         }
-        return new MeshData("Plane", vertices, GetPlaneIndices(xDivisions, yDivisions), normals, null, uv1);
+        return new MeshData("Plane", vertices, GetPlaneIndices(xQuadCount, yQuadCount), normals, null, uv1);
     }
     // This will make a cube which looks smooth.
     // To make a cube with flat faces, it will need 4 vertices for each face.
@@ -283,17 +283,17 @@ public static class Geometry
             }
         }
     }
-    private static int[] GetPlaneIndices(int xDivisions, int yDivisions)
+    private static int[] GetPlaneIndices(int xQuadCount, int yQuadCount)
     {
-        int xPoints = 1 + xDivisions;
-        int yPoints = 1 + yDivisions;
-        int[] indices = new int[xPoints * yPoints * 6];
+        int xPointCount = 1 + xQuadCount;
+        int yPointCount = 1 + yQuadCount;
+        int[] indices = new int[xQuadCount * yQuadCount * 6];
         int index = 0;
-        for(int y = 0; y < yDivisions; ++y)
+        for(int y = 0; y < yQuadCount; ++y)
         {
-            int row1 = xPoints * y;
-            int row2 = xPoints * (y + 1);
-            for(int x = 0; x < xDivisions; ++x)
+            int row1 = xPointCount * y;
+            int row2 = xPointCount * (y + 1);
+            for(int x = 0; x < xQuadCount; ++x)
             {
                 indices[index    ] = row1;
                 indices[index + 1] = row2 + 1;

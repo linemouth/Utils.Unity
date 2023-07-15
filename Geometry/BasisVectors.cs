@@ -1,7 +1,14 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public struct BasisVectors
 {
+    public static BasisVectors Right => new BasisVectors(Direction.Right);
+    public static BasisVectors Up => new BasisVectors(Direction.Up);
+    public static BasisVectors Forward => new BasisVectors(Direction.Forward);
+    public static BasisVectors Left => new BasisVectors(Direction.Left);
+    public static BasisVectors Down => new BasisVectors(Direction.Down);
+    public static BasisVectors Back => new BasisVectors(Direction.Back);
     public Vector3 normal;
     public Vector3 x;
     public Vector3 y;
@@ -74,5 +81,17 @@ public struct BasisVectors
         this.normal = Geometry.Normalized(normal);
         this.x = x;
         this.y = y;
+    }
+    public static BasisVectors operator *(BasisVectors basisVectors, float scale)
+    {
+        basisVectors.x *= scale;
+        basisVectors.y *= scale;
+        return basisVectors;
+    }
+    public static BasisVectors operator *(BasisVectors basisVectors, Vector2 scale)
+    {
+        basisVectors.x *= scale.x;
+        basisVectors.y *= scale.y;
+        return basisVectors;
     }
 }
