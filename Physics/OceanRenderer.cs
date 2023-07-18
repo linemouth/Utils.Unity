@@ -58,7 +58,7 @@ public class OceanRenderer : MonoBehaviour
         for(float xi = 0; xi < xInstanceCount; ++xi, x += meshSize)
         {
             float z = (1 - zInstanceCount) * meshSize / 2;
-            for(float zi = 0; zi < xInstanceCount; ++zi, z += meshSize)
+            for(float zi = 0; zi < zInstanceCount; ++zi, z += meshSize)
             {
                 Vector3 position = new Vector3(x, 0, z);
                 Quaternion rotation = Quaternion.identity;
