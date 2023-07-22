@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IStat
+namespace Utils.Unity
 {
-    public GameObject GameObject { get; }
-    public RectTransform RectTransform { get; }
+    public interface IStat
+    {
+        public GameObject GameObject { get; }
+        public RectTransform RectTransform { get; }
 
-    public void Update();
+        public void Update();
+    }
 }

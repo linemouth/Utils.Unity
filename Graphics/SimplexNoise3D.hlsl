@@ -174,20 +174,38 @@ float4 SimplexNoiseGradient3D(float3 v)
 }
 float SimplexNoise3D_Octave(float3 position, float frequency, float persistence, int octaves)
 {
-    float total = 0;
+    float result = 0;
     float amplitude = 1;
     float maxAmplitude = 0;
     octaves = max(1, min(12, octaves));
     
     for(int i = 0; i < octaves; ++i)
     {
-        total += SimplexNoise3D(position * frequency) * amplitude;
+        result += SimplexNoise3D(position * frequency) * amplitude;
         maxAmplitude += amplitude;
         frequency *= 2;
         amplitude *= persistence;
     }
 
-    return total / maxAmplitude;
+    return result / maxAmplitude;
+}
+float4 SimplexNoiseGradient3D_Octave(float3 position, float frequency, float persistence, int octaves)
+{
+    float4 result = (0, 0, 0, 0);
+    float amplitude = 1;
+    float maxAmplitude = 0;
+    octaves = max(1, min(12, octaves));
+    
+    for(int i = 0; i < octaves; ++i)
+    {
+        float4 octaveResult = SimplexNoiseGradient3D(position * frequency) * amplitude;
+        result += octaveResult * amplitude;
+        maxAmplitude += amplitude;
+        frequency *= 2;
+        amplitude *= persistence;
+    }
+    
+    return result / maxAmplitude;
 }
 
 // Custom Function Nodes
@@ -200,6 +218,10 @@ void SimplexNoiseGradient3D_float(float3 position, out float Out)
     Out = SimplexNoiseGradient3D(position);
 }
 void SimplexNoise3D_Octave_float(float3 position, float frequency, float persistence, int octaves, out float Out)
+{
+    Out = SimplexNoise3D_Octave(position, frequency, persistence, octaves);
+}
+void SimplexNoiseGradient3D_Octave_float(float3 position, float frequency, float persistence, int octaves, out float4 Out)
 {
     Out = SimplexNoise3D_Octave(position, frequency, persistence, octaves);
 }

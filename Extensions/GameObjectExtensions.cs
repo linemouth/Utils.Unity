@@ -5,23 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public static class GameObjectExtensions
+namespace Utils.Unity
 {
-    public static T GetOrAddComponent<T>(this GameObject go) where T : Component
+    public static class GameObjectExtensions
     {
-        if(!go.TryGetComponent<T>(out T component))
+        public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
-            component = go.AddComponent<T>();
+            if(!go.TryGetComponent<T>(out T result))
+            {
+                result = go.AddComponent<T>();
+            }
+            return result;
         }
-        return component;
-    }
-    public static T GetOrAddComponent<T>(this Component c) where T : Component
-    {
-        if(!c.gameObject.TryGetComponent<T>(out T component))
+        public static bool TryGetComponentInChildren<T>(this GameObject go, out T result) where T : Component
         {
-            component = c.gameObject.AddComponent<T>();
+            result = go.GetComponentInChildren<T>();
+            return result != null;
         }
-        return component;
+        public static bool TryGetComponentInParent<T>(this GameObject go, out T result) where T : Component
+        {
+            result = go.GetComponentInParent<T>();
+            return result != null;
+        }
     }
 }
-
