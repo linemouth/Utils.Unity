@@ -13,8 +13,8 @@ namespace Utils.Unity
         public StatBar(UnityEngine.Color barColor, UnityEngine.Color backgroundColor, Vector2 size, string name = null) : this(null, barColor, backgroundColor, size, name == null ? "Bar" : $"{name} Bar") { }
         public StatBar(Func<float> getValue, UnityEngine.Color barColor, UnityEngine.Color backgroundColor, Vector2 size, string name = null) : base(getValue, size, name == null ? "Bar" : $"{name} Bar")
         {
-            material = UnityEngine.Object.Instantiate(Resources.Load<Material>("Materials/UI/Simple Bar"));
-            material.SetColor("_Color", barColor);
+            material = UnityEngine.Object.Instantiate(Resources.Load<Material>("Materials/Fractional Bar"));
+            material.SetColor("_Foreground", barColor);
             material.SetColor("_Background", backgroundColor);
             image = GameObject.GetOrAddComponent<RawImage>();
             image.material = material;
@@ -25,7 +25,7 @@ namespace Utils.Unity
 
         protected override void Refresh()
         {
-            material.SetFloat("_Value", Value);
+            material.SetFloat("_Fraction", Value);
         }
     }
 }

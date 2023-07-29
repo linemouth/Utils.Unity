@@ -31,6 +31,7 @@ namespace Utils.Unity
                 }
             }
         }
+        public event Action<float> PriorityChanged;
         public event Action<Mission> OnAborted;
 
         private bool hasPriority = false;
@@ -39,17 +40,26 @@ namespace Utils.Unity
         {
             Name = name;
         }
-        public override string ToString() => $"{Name}: {GetPriority():0.00}";
-        public abstract float GetPriority();
+        public override string ToString() => $"{Name}: {Priority:0.00}";
+        public float UpdatePriority()
+        {
+            Priority = CalculatePriority();
+            PriorityChanged?.Invoke(Priority);
+            return Priority;
+        }
         public virtual void Update() { }
         public virtual void Update1() { }
         public virtual void OnAcquiredPriority() { }
         public virtual void OnLostPriority() { }
 
+        protected abstract float CalculatePriority();
         protected void Abort()
         {
-            HasPriority = false;
-            OnAborted?.Invoke(this);
+            if(HasPriority)
+            {
+                HasPriority = false;
+                OnAborted?.Invoke(this);
+            }
         }
     }
 }

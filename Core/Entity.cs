@@ -23,28 +23,25 @@ namespace Utils.Unity
             }
         }
         public Bounds Bounds { get; private set; }
-        public StatBlock StatBlock
+        public EntityUI UI
         {
             get
             {
-                if(statBlock == null)
+                if(ui == null)
                 {
                     GameObject go = new GameObject("Stats Block for " + gameObject.name);
-                    statBlock = go.GetOrAddComponent<StatBlock>();
-                    statBlock.entity = this;
-                    statBlock.Add(new StatLabel(() => name, "Name"));
-                    //StatBlock.AddStat(new StatBar(() => 1, new Color(0.0f, 0.6f, 1.0f), Color.black, new Vector2(50, 3), "Shield"));
-                    //StatBlock.AddStat(new StatBar(() => 1, new Color(1.0f, 0.8f, 0.2f), Color.black, new Vector2(50, 3), "Armor"));
-                    //StatBlock.AddStat(new StatBar(() => 1, new Color(0.0f, 1.0f, 0.0f), Color.black, new Vector2(50, 3), "Health"));
+                    ui = go.GetOrAddComponent<EntityUI>();
+                    ui.Entity = this;
+                    ui.Add(new StatLabel(() => name, "Name"));
                 }
-                return statBlock;
+                return ui;
             }
         }
         public event Action<Bounds> BoundsChanged;
         public string Name { get => name; set => name = value; }
 
         private Faction faction;
-        private StatBlock statBlock;
+        private EntityUI ui = null;
 
         public void Kill() { }
         public void UpdateBounds()
@@ -56,22 +53,11 @@ namespace Utils.Unity
             };
             Bounds = bounds;
             BoundsChanged?.Invoke(Bounds);
-            if(StatBlock != null)
-            {
-                StatBlock.Entity = this;
-            }
         }
 
         private void Start()
         {
             UpdateBounds();
-        }
-        private void OnDestroy()
-        {
-            if(StatBlock != null)
-            {
-                Destroy(StatBlock.gameObject);
-            }
         }
     }
 }

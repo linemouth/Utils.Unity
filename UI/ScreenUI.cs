@@ -9,13 +9,13 @@ namespace Utils.Unity
     {
         public static Canvas Canvas => instance.canvas;
         public static Transform Transform => instance.transform;
-        public static GameObject LeftSidebar => instance.leftSidebar;
-        public static GameObject RightSidebar => instance.rightSidebar;
+        public static StatBlock LeftSidebar => instance.leftSidebar;
+        public static StatBlock RightSidebar => instance.rightSidebar;
 
         private static ScreenUI instance = null;
         private Canvas canvas;
-        private GameObject leftSidebar;
-        private GameObject rightSidebar;
+        private StatBlock leftSidebar;
+        private StatBlock rightSidebar;
         private RectTransform leftSidebarTransform;
         private RectTransform rightSidebarTransform;
         private VerticalLayoutGroup leftLayout;
@@ -32,7 +32,8 @@ namespace Utils.Unity
                 //canvas.pixelPerfect = true;
                 canvas.enabled = true;
 
-                leftSidebar = new GameObject("Left Sidebar");
+                GameObject go = new GameObject("Left Sidebar");
+                leftSidebar = go.AddComponent<StatBlock>();
                 leftSidebarTransform = leftSidebar.GetOrAddComponent<RectTransform>();
                 leftSidebarTransform.SetParent(transform);
                 leftSidebarTransform.anchorMin = new Vector2(0, 0);
@@ -51,7 +52,8 @@ namespace Utils.Unity
                 leftLayout.padding = new RectOffset(4, 0, 4, 0);
                 leftLayout.spacing = 4;
 
-                rightSidebar = new GameObject("Right Sidebar");
+                go = new GameObject("Right Sidebar");
+                rightSidebar = go.AddComponent<StatBlock>();
                 rightSidebarTransform = rightSidebar.GetOrAddComponent<RectTransform>();
                 rightSidebarTransform.SetParent(transform);
                 rightSidebarTransform.anchorMin = new Vector2(1, 0);

@@ -16,9 +16,9 @@ namespace Utils.Unity
         {
             GameObject = new GameObject("Divider");
             RectTransform = GameObject.GetOrAddComponent<RectTransform>();
-            RectTransform.sizeDelta = new Vector2(50, 2);
+            RectTransform.sizeDelta = new Vector2(64, 3);
             image = GameObject.AddComponent<RawImage>();
-            image.material = Resources.GetBuiltinResource<Font>("Arial.ttf").material;
+            image.material = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf").material;
         }
         public void Update() { }
     }

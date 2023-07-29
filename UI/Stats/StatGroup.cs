@@ -26,7 +26,7 @@ namespace Utils.Unity
             layout.childForceExpandWidth = true;
             layout.childControlHeight = false;
             layout.childControlWidth = true;
-            layout.childAlignment = TextAnchor.LowerCenter;
+            layout.childAlignment = TextAnchor.UpperCenter;
             UpdateLayout();
         }
         public IStat Add(IStat stat)

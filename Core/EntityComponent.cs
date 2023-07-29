@@ -8,7 +8,7 @@ namespace Utils.Unity
     {
         public Entity Entity { get; private set; }
         public Faction Faction { get => Entity.Faction; set => Entity.Faction = value; }
-        public StatBlock StatBlock => Entity.StatBlock;
+        public EntityUI UI => Entity.UI;
 
         protected virtual void Awake()
         {

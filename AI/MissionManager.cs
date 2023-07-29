@@ -9,7 +9,8 @@ namespace Utils.Unity
     public class MissionManager : IEnumerable<Mission>
     {
         public Mission CurrentMission { get; private set; } = null;
-        public float hysteresis;
+        public float hysteresis = 0.2f;
+        public event Action<Mission> missionChanged;
 
         protected readonly List<Mission> missions = new List<Mission>();
 
@@ -24,7 +25,7 @@ namespace Utils.Unity
             foreach(Mission mission in missions)
             {
                 // Get the priority of each mission.
-                float priority = mission.Priority;
+                float priority = mission.UpdatePriority();
 
                 // If this is the current mission, give it a bonus equal to hysteresis.
                 if(mission.HasPriority)
@@ -42,14 +43,21 @@ namespace Utils.Unity
             // Select the mission with the highest priority.
             if(newCurrentMission != CurrentMission)
             {
-                CurrentMission.HasPriority = false;
+                if(CurrentMission != null)
+                {
+                    CurrentMission.HasPriority = false;
+                }
                 CurrentMission = newCurrentMission;
-                CurrentMission.HasPriority = true;
+                if(CurrentMission != null)
+                {
+                    CurrentMission.HasPriority = true;
+                }
+                missionChanged?.Invoke(CurrentMission);
             }
         }
         public void Add(Mission mission)
         {
-            if(mission == null && !missions.Contains(mission))
+            if(mission != null && !missions.Contains(mission))
             {
                 mission.OnAborted += MissionAborted;
                 missions.Add(mission);
@@ -57,8 +65,13 @@ namespace Utils.Unity
         }
         public void Remove(Mission mission)
         {
-            if(mission == null && missions.Remove(mission))
+            if(mission != null && missions.Remove(mission))
             {
+                if(mission == CurrentMission)
+                {
+                    mission.HasPriority = false;
+                    Update();
+                }
                 mission.OnAborted -= MissionAborted;
             }
         }
